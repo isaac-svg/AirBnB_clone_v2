@@ -1,7 +1,14 @@
 #!/usr/bin/python3
-"""This is the file storage class for AirBnB clone """
-import shlex
+"""This is the file storage class for AirBnB"""
 import json
+from models.base_model import BaseModel
+from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+import shlex
 
 
 class FileStorage:
@@ -9,24 +16,24 @@ class FileStorage:
     deserializes JSON file to instances
     Attributes:
         __file_path: path to the JSON file
-        __objects: objects will be stored in
+        __objects: objects will be stored
     """
     __file_path = "file.json"
     __objects = {}
 
     def all(self, cls=None):
-        """Gets the objects as a dictionary
+        """returns a dictionary
         Return:
             returns a dictionary of __object
         """
         dic = {}
         if cls:
             dictionary = self.__objects
-            for k in dictionary:
-                partition = k.replace('.', ' ')
+            for key in dictionary:
+                partition = key.replace('.', ' ')
                 partition = shlex.split(partition)
                 if (partition[0] == cls.__name__):
-                    dic[k] = self.__objects[k]
+                    dic[key] = self.__objects[key]
             return (dic)
         else:
             return self.__objects
@@ -61,13 +68,13 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """ delete an existing object
+        """ delete an existing element
         """
         if obj:
-            k = "{}.{}".format(type(obj).__name__, obj.id)
-            del self.__objects[k]
+            key = "{}.{}".format(type(obj).__name__, obj.id)
+            del self.__objects[key]
 
     def close(self):
-        """ reloads
+        """ calls reload()
         """
         self.reload()

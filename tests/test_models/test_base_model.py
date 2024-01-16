@@ -56,10 +56,10 @@ class test_basemodel(unittest.TestCase):
         copy = i.to_dict()
         copy.update({1: 2})
         with self.assertRaises(TypeError):
-            BaseModel(**copy)
+            new = BaseModel(**copy)
 
     def test_save(self):
-        """ Testing saving object """
+        """ Testing save """
         i = self.value()
         i.save()
         key = self.name + "." + i.id
@@ -70,19 +70,26 @@ class test_basemodel(unittest.TestCase):
     def test_str(self):
         """ """
         i = self.value()
-        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id, i.__dict__))
-
-    def test_kwargs_none(self):
-        """ """
-        n = {None: None}
-        with self.assertRaises(TypeError):
-            self.value(**n)
+        self.assertEqual(str(i), '[{}] ({}) {}'.format(self.name, i.id,
+                         i.__dict__))
 
     def test_todict(self):
         """ """
         i = self.value()
         n = i.to_dict()
         self.assertEqual(i.to_dict(), n)
+
+    def test_kwargs_none(self):
+        """ """
+        n = {None: None}
+        with self.assertRaises(TypeError):
+            new = self.value(**n)
+
+    # def test_kwargs_one(self):
+    #     """ """
+    #     n = {'Name': 'test'}
+    #     with self.assertRaises(KeyError):
+    #         new = self.value(**n)
 
     def test_id(self):
         """ """
@@ -154,7 +161,7 @@ class Test_docstrings(unittest.TestCase):
 
 
 class TestBaseModel(unittest.TestCase):
-    """this will test the base model class """
+    """this will test the base model class x"""
 
     @classmethod
     def setUpClass(cls):
@@ -195,17 +202,17 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
 
-    def test_save_BaseModel(self):
+    def test_init_BaseModel(self):
+        """test if the base is an type BaseModel"""
+        self.assertTrue(isinstance(self.base, BaseModel))
+
+    def test_save_BaesModel(self):
         """test if the save works"""
         self.base.save()
         self.assertNotEqual(self.base.created_at, self.base.updated_at)
 
-    def test_init_BaseModel(self):
-        """test if the base is a type BaseModel"""
-        self.assertTrue(isinstance(self.base, BaseModel))
-
     def test_to_dict_BaseModel(self):
-        """test if dictionary conversion works works"""
+        """test if dictionary works"""
         base_dict = self.base.to_dict()
         self.assertEqual(self.base.__class__.__name__, 'BaseModel')
         self.assertIsInstance(base_dict['created_at'], str)
