@@ -1,12 +1,12 @@
 #!/usr/bin/python3
+from sqlalchemy.orm import relationship
 """This is the place class"""
-from sqlalchemy.ext.declarative import declarative_base
+import models
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
-from sqlalchemy.orm import relationship
 from os import getenv
-import models
-
+import shlex
+from models.amenity import Amenity
 
 place_amenity = Table("place_amenity", Base.metadata,
                       Column("place_id", String(60),
@@ -20,19 +20,19 @@ place_amenity = Table("place_amenity", Base.metadata,
 
 
 class Place(BaseModel, Base):
-    """This is the class for Place
+    """This is the defintion for the Place class
     Attributes:
-        city_id: city id
         user_id: user id
+        city_id: city id
         name: name input
-        description: string of description
         number_rooms: number of room in int
-        number_bathrooms: number of bathrooms in int
         max_guest: maximum guest in int
+        number_bathrooms: number of bathrooms in int
         price_by_night:: pice for a staying in int
-        latitude: latitude in flaot
-        longitude: longitude in float
-        amenity_ids: list of Amenity ids
+        description: string of description
+        latitude: latitude 
+        longitude: longitude
+        amenity_ids: list of all Amenity ids
     """
     __tablename__ = "places"
     city_id = Column(String(60), ForeignKey("cities.id"), nullable=False)
@@ -51,21 +51,19 @@ class Place(BaseModel, Base):
         reviews = relationship("Review", cascade='all, delete, delete-orphan',
                                backref="place")
 
-        amenities = relationship("Amenity", secondary=place_amenity,
-                                 viewonly=False,
-                                 back_populates="place_amenities")
+        amenities = relationship("Amenity", secondary= place_amenity, viewonly=False, back_populates="place_amenities")
     else:
         @property
         def reviews(self):
-            """ Returns list of reviews.id """
-            var = models.storage.all()
+            """ Returns list of reviews id """
+            places = models.storage.all()
             lista = []
             result = []
-            for key in var:
+            for key in places:
                 review = key.replace('.', ' ')
                 review = shlex.split(review)
                 if (review[0] == 'Review'):
-                    lista.append(var[key])
+                    lista.append(places[key])
             for elem in lista:
                 if (elem.place_id == self.id):
                     result.append(elem)
