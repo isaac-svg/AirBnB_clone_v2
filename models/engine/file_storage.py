@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-"""This is the file storage class for AirBnB"""
-import json
+"""This is the file storage class for AirBnB clone """
 import shlex
+import json
 
 
 class FileStorage:
@@ -9,7 +9,7 @@ class FileStorage:
     deserializes JSON file to instances
     Attributes:
         __file_path: path to the JSON file
-        __objects: objects will be stored
+        __objects: objects will be stored in
     """
     __file_path = "file.json"
     __objects = {}
