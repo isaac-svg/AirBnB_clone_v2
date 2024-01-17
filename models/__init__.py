@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""create a unique FileStorage instance for your application"""
+"""Creates a unique FileStorage instance for the application"""
 from os import getenv
 from models.user import User
 from models.city import City
