@@ -1,16 +1,16 @@
 #!/usr/bin/python3
-""" new class for sqlAlchemy """
+""" new class for SQLAlchemy """
 from os import getenv
-from sqlalchemy.orm import sessionmaker, scoped_session
-from sqlalchemy import (create_engine)
-from sqlalchemy.ext.declarative import declarative_base
-from models.base_model import Base
-from models.state import State
 from models.city import City
 from models.user import User
+from models.state import State
 from models.place import Place
 from models.review import Review
 from models.amenity import Amenity
+from models.base_model import Base
+from sqlalchemy import (create_engine)
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage:
@@ -25,9 +25,7 @@ class DBStorage:
         host = getenv("HBNB_MYSQL_HOST")
         env = getenv("HBNB_ENV")
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                      .format(user, passwd, host, db),
-                                      pool_pre_ping=True)
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(user, passwd, host, db), pool_pre_ping=True)
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
@@ -60,7 +58,7 @@ class DBStorage:
         self.__session.add(obj)
 
     def save(self):
-        """save changes
+        """ Tests save changes
         """
         self.__session.commit()
 
@@ -71,7 +69,7 @@ class DBStorage:
             self.session.delete(obj)
 
     def reload(self):
-        """configuration
+        """ reload configuration configuration
         """
         Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
@@ -79,6 +77,6 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """ calls remove()
+        """ calls close()
         """
         self.__session.close()

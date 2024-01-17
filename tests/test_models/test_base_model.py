@@ -1,16 +1,16 @@
 #!/usr/bin/python3
 """ """
-from models.base_model import BaseModel
+import os
+import json
 import unittest
 import datetime
 from uuid import UUID
-import json
-import os
 import pycodestyle
+from models.base_model import BaseModel
 
 
 class test_basemodel(unittest.TestCase):
-    """ """
+    """Test for base model """
 
     def __init__(self, *args, **kwargs):
         """ """
@@ -25,8 +25,7 @@ class test_basemodel(unittest.TestCase):
         """
         pycostyle = pycodestyle.StyleGuide(quiet=True)
         result = pycostyle.check_files(['models/base_model.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+        self.assertEqual(result.total_errors, 0, "Found code style errors (and warnings).")
 
     def setUp(self):
         """ """
@@ -39,7 +38,7 @@ class test_basemodel(unittest.TestCase):
             pass
 
     def test_default(self):
-        """ """
+        """Test Default """
         i = self.value()
         self.assertEqual(type(i), self.value)
 
@@ -84,12 +83,6 @@ class test_basemodel(unittest.TestCase):
         n = {None: None}
         with self.assertRaises(TypeError):
             new = self.value(**n)
-
-    # def test_kwargs_one(self):
-    #     """ """
-    #     n = {'Name': 'test'}
-    #     with self.assertRaises(KeyError):
-    #         new = self.value(**n)
 
     def test_id(self):
         """ """
@@ -139,12 +132,11 @@ class TestCodeFormat(unittest.TestCase):
     A class to test pep8 on base_model file"""
     def test_pycodestyle(self):
         """
-        Test pep8 format
+        Tests pep8 format
         """
         pycostyle = pycodestyle.StyleGuide(quiet=True)
         result = pycostyle.check_files(['models/base_model.py'])
-        self.assertEqual(result.total_errors, 0,
-                         "Found code style errors (and warnings).")
+        self.assertEqual(result.total_errors, 0,  "Found code style errors (and warnings).")
 
 
 class Test_docstrings(unittest.TestCase):
@@ -153,8 +145,8 @@ class Test_docstrings(unittest.TestCase):
     def setup_class(self):
         """
         inspect.getmembers(object, [predicate])
-        Return all the members of an object in a list of (name, value)
-        pairs sorted by name
+        Returns all the members of an object in a list of
+        pairs sorted by name.
         only members for which the predicate returns a true value are included
         """
         self.obj_members(BaseModel, inspect.isfunction)
@@ -167,23 +159,23 @@ class TestBaseModel(unittest.TestCase):
     def setUpClass(cls):
         """setup for the test"""
         cls.base = BaseModel()
-        cls.base.name = "Kev"
         cls.base.num = 20
+        cls.base.name = "Kev"
 
     @classmethod
     def teardown(cls):
-        """at the end of the test this will tear it down"""
+        """Deletes the base class at the end of the test"""
         del cls.base
 
     def tearDown(self):
-        """teardown"""
+        """teardown deletes file.json"""
         try:
             os.remove("file.json")
         except Exception:
             pass
 
     def test_pep8_BaseModel(self):
-        """Testing for pep8"""
+        """Tests for pep8"""
         style = pep8.StyleGuide(quiet=True)
         p = style.check_files(['models/base_model.py'])
         self.assertEqual(p.total_errors, 0, "fix pep8")
@@ -191,32 +183,32 @@ class TestBaseModel(unittest.TestCase):
     def test_checking_for_docstring_BaseModel(self):
         """checking for docstrings"""
         self.assertIsNotNone(BaseModel.__doc__)
-        self.assertIsNotNone(BaseModel.__init__.__doc__)
         self.assertIsNotNone(BaseModel.__str__.__doc__)
-        self.assertIsNotNone(BaseModel.save.__doc__)
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
+        self.assertIsNotNone(BaseModel.save.__doc__)
+        self.assertIsNotNone(BaseModel.__init__.__doc__)
 
     def test_method_BaseModel(self):
         """chekcing if Basemodel have methods"""
-        self.assertTrue(hasattr(BaseModel, "__init__"))
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
-
-    def test_init_BaseModel(self):
-        """test if the base is an type BaseModel"""
-        self.assertTrue(isinstance(self.base, BaseModel))
+        self.assertTrue(hasattr(BaseModel, "__init__"))
 
     def test_save_BaesModel(self):
-        """test if the save works"""
+        """tests if the save works"""
         self.base.save()
         self.assertNotEqual(self.base.created_at, self.base.updated_at)
 
+    def test_init_BaseModel(self):
+        """tests if the base is an type BaseModel"""
+        self.assertTrue(isinstance(self.base, BaseModel))
+
     def test_to_dict_BaseModel(self):
-        """test if dictionary works"""
+        """tests if dictionary works"""
         base_dict = self.base.to_dict()
         self.assertEqual(self.base.__class__.__name__, 'BaseModel')
-        self.assertIsInstance(base_dict['created_at'], str)
         self.assertIsInstance(base_dict['updated_at'], str)
+        self.assertIsInstance(base_dict['created_at'], str)
 
 
 if __name__ == "__main__":

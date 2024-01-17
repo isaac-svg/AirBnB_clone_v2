@@ -1,11 +1,13 @@
 #!/usr/bin/python3
-"""This is the place class"""
-from sqlalchemy.ext.declarative import declarative_base
-from models.base_model import BaseModel, Base
-from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
-from sqlalchemy.orm import relationship
-from os import getenv
+"""Place class"""
 import models
+import shlex
+import amenity as Amenity
+from os import getenv
+from sqlalchemy.orm import relationship
+from models.base_model import BaseModel, Base
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Table, String, Integer, Float, ForeignKey
 
 
 place_amenity = Table("place_amenity", Base.metadata,
@@ -20,16 +22,16 @@ place_amenity = Table("place_amenity", Base.metadata,
 
 
 class Place(BaseModel, Base):
-    """This is the class for Place
+    """Place class
     Attributes:
         city_id: city id
         user_id: user id
         name: name input
         description: string of description
-        number_rooms: number of room in int
-        number_bathrooms: number of bathrooms in int
-        max_guest: maximum guest in int
-        price_by_night:: pice for a staying in int
+        number_rooms: number of room
+        number_bathrooms: number of bathrooms 
+        max_guest: maximum guest
+        price_by_night:: price for a staying
         latitude: latitude in flaot
         longitude: longitude in float
         amenity_ids: list of Amenity ids
@@ -48,12 +50,9 @@ class Place(BaseModel, Base):
     amenity_ids = []
 
     if getenv("HBNB_TYPE_STORAGE") == "db":
-        reviews = relationship("Review", cascade='all, delete, delete-orphan',
-                               backref="place")
+        reviews = relationship("Review", cascade='all, delete, delete-orphan', backref="place")
 
-        amenities = relationship("Amenity", secondary=place_amenity,
-                                 viewonly=False,
-                                 back_populates="place_amenities")
+        amenities = relationship("Amenity", secondary=place_amenity, viewonly=False, back_populates="place_amenities")
     else:
         @property
         def reviews(self):

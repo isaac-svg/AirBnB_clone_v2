@@ -1,25 +1,24 @@
 #!/usr/bin/python3
 """This is the file storage class for AirBnB"""
 import json
-from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
 import shlex
+from models.user import User
+from models.city import City
+from models.place import Place
+from models.state import State
+from models.review import Review
+from models.amenity import Amenity
+from models.base_model import BaseModel
 
 
 class FileStorage:
-    """This class serializes instances to a JSON file and
-    deserializes JSON file to instances
+    """This class serializes instances to a JSON file
     Attributes:
-        __file_path: path to the JSON file
         __objects: objects will be stored
+        __file_path: path to the JSON file
     """
-    __file_path = "file.json"
     __objects = {}
+    __file_path = "file.json"
 
     def all(self, cls=None):
         """returns a dictionary
@@ -39,7 +38,7 @@ class FileStorage:
             return self.__objects
 
     def new(self, obj):
-        """sets __object to given obj
+        """sets __object to given object
         Args:
             obj: given object
         """
@@ -68,7 +67,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """ delete an existing element
+        """ deletes an  element
         """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
