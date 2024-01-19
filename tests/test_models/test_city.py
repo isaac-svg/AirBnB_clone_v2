@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """ """
-from tests.test_models.test_base_model import test_basemodel
-from models.city import City
 import pycodestyle
+from models.city import City
+from tests.test_models.test_base_model import test_basemodel
 
 
 class test_City(test_basemodel):

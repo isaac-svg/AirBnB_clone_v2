@@ -11,8 +11,7 @@ Base = declarative_base()
 
 
 class BaseModel:
-    """This class will defines all common attributes/methods
-    for other classes
+    """Base class for the project
     """
     id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
@@ -21,7 +20,7 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         """Instantiation of base model class
         Args:
-            args: it won't be used
+            args: ignored
             kwargs: arguments for the constructor of the BaseModel
         Attributes:
             id: unique id generated
@@ -45,29 +44,17 @@ class BaseModel:
             self.created_at = self.updated_at = datetime.now()
 
     def __str__(self):
-        """returns a string
+        """Returns a string
         Return:
-            returns a string of class name, id, and dictionary
+            Returns a string of class name, id, and dictionary
         """
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, self.__dict__)
 
-    def __repr__(self):
-        """return a string representaion
-        """
-        return self.__str__()
-
-    def save(self):
-        """updates the public instance attribute updated_at to current
-        """
-        self.updated_at = datetime.now()
-        models.storage.new(self)
-        models.storage.save()
-
     def to_dict(self):
-        """creates dictionary of the class  and returns
+        """creates dictionary of the class  and Returns
         Return:
-            returns a dictionary of all the key values in __dict__
+            Returns a dictionary of all the key values in __dict__
         """
         my_dict = dict(self.__dict__)
         my_dict["__class__"] = str(type(self).__name__)
@@ -77,7 +64,19 @@ class BaseModel:
             del my_dict['_sa_instance_state']
         return my_dict
 
+    def __repr__(self):
+        """return a string representaion
+        """
+        return self.__str__()
+
     def delete(self):
-        """ delete object
+        """ deletes an object
         """
         models.storage.delete(self)
+
+    def save(self):
+        """Updates the public instance attribute updated_at to current date
+        """
+        self.updated_at = datetime.now()
+        models.storage.new(self)
+        models.storage.save()

@@ -1,12 +1,12 @@
 #!/usr/bin/python3
-""" """
-from models.base_model import BaseModel
+""" Test BaseModel class"""
+import os
+import json
 import unittest
 import datetime
-from uuid import UUID
-import json
-import os
 import pycodestyle
+from uuid import UUID
+from models.base_model import BaseModel
 
 
 class test_basemodel(unittest.TestCase):
@@ -85,12 +85,6 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = self.value(**n)
 
-    # def test_kwargs_one(self):
-    #     """ """
-    #     n = {'Name': 'test'}
-    #     with self.assertRaises(KeyError):
-    #         new = self.value(**n)
-
     def test_id(self):
         """ """
         new = self.value()
@@ -161,7 +155,7 @@ class Test_docstrings(unittest.TestCase):
 
 
 class TestBaseModel(unittest.TestCase):
-    """this will test the base model class x"""
+    """ test the base model class """
 
     @classmethod
     def setUpClass(cls):
@@ -172,7 +166,7 @@ class TestBaseModel(unittest.TestCase):
 
     @classmethod
     def teardown(cls):
-        """at the end of the test this will tear it down"""
+        """Close down at the end of test"""
         del cls.base
 
     def tearDown(self):
@@ -189,21 +183,21 @@ class TestBaseModel(unittest.TestCase):
         self.assertEqual(p.total_errors, 0, "fix pep8")
 
     def test_checking_for_docstring_BaseModel(self):
-        """checking for docstrings"""
+        """check for docstrings"""
         self.assertIsNotNone(BaseModel.__doc__)
         self.assertIsNotNone(BaseModel.__init__.__doc__)
-        self.assertIsNotNone(BaseModel.__str__.__doc__)
         self.assertIsNotNone(BaseModel.save.__doc__)
+        self.assertIsNotNone(BaseModel.__str__.__doc__)
         self.assertIsNotNone(BaseModel.to_dict.__doc__)
 
     def test_method_BaseModel(self):
-        """chekcing if Basemodel have methods"""
+        """check Basemodel  methods"""
         self.assertTrue(hasattr(BaseModel, "__init__"))
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
 
     def test_init_BaseModel(self):
-        """test if the base is an type BaseModel"""
+        """test if the base has a BaseModel trpe"""
         self.assertTrue(isinstance(self.base, BaseModel))
 
     def test_save_BaesModel(self):

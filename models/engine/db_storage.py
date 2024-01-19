@@ -14,7 +14,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 
 
 class DBStorage:
-    """ create tables in environmental"""
+    """ Create tables in environment"""
     __engine = None
     __session = None
 
@@ -25,15 +25,14 @@ class DBStorage:
         host = getenv("HBNB_MYSQL_HOST")
         env = getenv("HBNB_ENV")
 
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'
-                                      .format(user, passwd, host, db),
+        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(user, passwd, host, db),
                                       pool_pre_ping=True)
 
         if env == "test":
             Base.metadata.drop_all(self.__engine)
 
     def all(self, cls=None):
-        """returns a dictionary
+        """Returns a dictionary
         Return:
             returns a dictionary of __object
         """
@@ -55,23 +54,23 @@ class DBStorage:
         return (dic)
 
     def new(self, obj):
-        """add a new element in the table
+        """Add a new element in the table
         """
         self.__session.add(obj)
 
     def save(self):
-        """save changes
+        """Save changes
         """
         self.__session.commit()
 
     def delete(self, obj=None):
-        """delete an element in the table
+        """Delete an element in the table
         """
         if obj:
             self.session.delete(obj)
 
     def reload(self):
-        """configuration
+        """ Setup configuration
         """
         Base.metadata.create_all(self.__engine)
         sec = sessionmaker(bind=self.__engine, expire_on_commit=False)
@@ -79,6 +78,6 @@ class DBStorage:
         self.__session = Session()
 
     def close(self):
-        """ calls remove()
+        """ calls close()
         """
         self.__session.close()
