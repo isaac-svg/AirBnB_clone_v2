@@ -1,10 +1,8 @@
 #!/usr/bin/python3
 """ """
-import os
-import unittest
-from models.city import City
-from models.base_model import BaseModel
 from tests.test_models.test_base_model import test_basemodel
+from models.city import City
+import pycodestyle
 
 
 class test_City(test_basemodel):
@@ -45,12 +43,12 @@ class TestCity(unittest.TestCase):
     def setUpClass(cls):
         """set up for test"""
         cls.city = City()
-        cls.city.state_id = "CA"
         cls.city.name = "LA"
+        cls.city.state_id = "CA"
 
     @classmethod
     def teardown(cls):
-        """At the end of the test this will tear it down"""
+        """at the end of the test this will tear it down"""
         del cls.city
 
     def tearDown(self):
@@ -72,23 +70,23 @@ class TestCity(unittest.TestCase):
 
     def test_attributes_City(self):
         """chekcing if City have attributes"""
-        self.assertTrue('updated_at' in self.city.__dict__)
-        self.assertTrue('created_at' in self.city.__dict__)
         self.assertTrue('id' in self.city.__dict__)
+        self.assertTrue('created_at' in self.city.__dict__)
+        self.assertTrue('updated_at' in self.city.__dict__)
         self.assertTrue('state_id' in self.city.__dict__)
         self.assertTrue('name' in self.city.__dict__)
 
     def test_is_subclass_City(self):
-        """Tests if City is subclass of Basemodel"""
+        """test if City is subclass of Basemodel"""
         self.assertTrue(issubclass(self.city.__class__, BaseModel), True)
 
     def test_attribute_types_City(self):
-        """Test attribute type for City"""
+        """test attribute type for City"""
         self.assertEqual(type(self.city.name), str)
         self.assertEqual(type(self.city.state_id), str)
 
     def test_save_City(self):
-        """Test if the save works"""
+        """test if the save works"""
         self.city.save()
         self.assertNotEqual(self.city.created_at, self.city.updated_at)
 
