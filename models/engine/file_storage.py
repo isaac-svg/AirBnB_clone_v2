@@ -1,19 +1,19 @@
 #!/usr/bin/python3
-"""File storage class"""
+""" file storage class """
 import json
-import shlex
+from models.base_model import BaseModel
 from models.user import User
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-from models.base_model import BaseModel
+import shlex
 
 
 class FileStorage:
     """This class serializes instances to a JSON file and
-    deserializes JSON file to instances
+    deserializes JSON file 
     Attributes:
         __file_path: path to the JSON file
         __objects: objects will be stored
@@ -22,7 +22,7 @@ class FileStorage:
     __objects = {}
 
     def all(self, cls=None):
-        """returns a dictionary
+        """Returns a dictionary
         Return:
             returns a dictionary of __object
         """
@@ -68,7 +68,7 @@ class FileStorage:
             pass
 
     def delete(self, obj=None):
-        """ delete an existing element
+        """ Deletes an existing element
         """
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)

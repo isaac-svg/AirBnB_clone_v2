@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""This is the base model class for AirBnB"""
+""" base model class for AirBnB"""
 from sqlalchemy.ext.declarative import declarative_base
 import uuid
 import models
@@ -11,7 +11,8 @@ Base = declarative_base()
 
 
 class BaseModel:
-    """Base class for the project
+    """This class will defines all common attributes/methods
+    for other classes
     """
     id = Column(String(60), unique=True, nullable=False, primary_key=True)
     created_at = Column(DateTime, nullable=False, default=(datetime.utcnow()))
@@ -46,10 +47,22 @@ class BaseModel:
     def __str__(self):
         """Returns a string
         Return:
-            Returns a string of class name, id, and dictionary
+            Returns a string of class id, name and  dictionary
         """
         return "[{}] ({}) {}".format(
             type(self).__name__, self.id, self.__dict__)
+
+    def __repr__(self):
+        """return a string representaion
+        """
+        return self.__str__()
+
+    def save(self):
+        """updates the public instance attribute updated_at to current
+        """
+        self.updated_at = datetime.now()
+        models.storage.new(self)
+        models.storage.save()
 
     def to_dict(self):
         """creates dictionary of the class  and Returns
@@ -64,19 +77,7 @@ class BaseModel:
             del my_dict['_sa_instance_state']
         return my_dict
 
-    def __repr__(self):
-        """return a string representaion
-        """
-        return self.__str__()
-
     def delete(self):
-        """ deletes an object
+        """ deletes object
         """
         models.storage.delete(self)
-
-    def save(self):
-        """Updates the public instance attribute updated_at to current date
-        """
-        self.updated_at = datetime.now()
-        models.storage.new(self)
-        models.storage.save()
